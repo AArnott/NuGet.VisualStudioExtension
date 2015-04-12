@@ -29,11 +29,11 @@ namespace NuGet.PackageManagement.VisualStudio
         }
     }
 
-    public class ProjectKNuGetProject : ProjectKNuGetProjectBase
+    public class NuGetAwareProject : NuGetAwareProjectBase
     {
         private INuGetPackageManager _project;
 
-        public ProjectKNuGetProject(INuGetPackageManager project, string projectName, string uniqueName)
+        public NuGetAwareProject(INuGetPackageManager project, string projectName, string uniqueName)
         {
             _project = project;
             InternalMetadata.Add(NuGetProjectMetadataKeys.Name, projectName);

@@ -161,7 +161,7 @@ namespace NuGet.PackageManagement.VisualStudio
         {
             Debug.Assert(envDTEProject != null);
 
-            if (SupportsINuGetProjectSystem(envDTEProject))
+            if (SupportsINuGetPackageManager(envDTEProject))
             {
                 return true;
             }
@@ -1048,10 +1048,10 @@ namespace NuGet.PackageManagement.VisualStudio
             return isShared;
         }
 
-        public static bool SupportsINuGetProjectSystem(EnvDTEProject envDTEProject)
+        public static bool SupportsINuGetPackageManager(EnvDTEProject envDTEProject)
         {
-            var projectKProject = VSNuGetProjectFactory.GetProjectKProject(envDTEProject);
-            return projectKProject != null;
+            var nugetPackageManager = VSNuGetProjectFactory.GetNuGetPackageManager(envDTEProject);
+            return nugetPackageManager != null;
         }
         #endregion // Check Project Types
 

@@ -34,10 +34,10 @@ namespace NuGet.PackageManagement.VisualStudio
                 nuGetProjectContext = EmptyNuGetProjectContext;
             }
 
-            var projectK = GetProjectKProject(envDTEProject);
-            if (projectK != null)
+            var nugetAwareProject = GetNuGetPackageManager(envDTEProject);
+            if (nugetAwareProject != null)
             {
-                return new ProjectKNuGetProject(projectK, envDTEProject.Name, envDTEProject.UniqueName);
+                return new NuGetAwareProject(nugetAwareProject, envDTEProject.Name, envDTEProject.UniqueName);
             }
 
             var msBuildNuGetProjectSystem = MSBuildNuGetProjectSystemFactory.CreateMSBuildNuGetProjectSystem(envDTEProject, nuGetProjectContext);
@@ -54,7 +54,7 @@ namespace NuGet.PackageManagement.VisualStudio
             return msBuildNuGetProject;
         }
 
-        public static INuGetPackageManager GetProjectKProject(EnvDTEProject project)
+        public static INuGetPackageManager GetNuGetPackageManager(EnvDTEProject project)
         {
             var vsProject = VsHierarchyUtility.ToVsHierarchy(project) as IVsProject;
             if (vsProject == null)

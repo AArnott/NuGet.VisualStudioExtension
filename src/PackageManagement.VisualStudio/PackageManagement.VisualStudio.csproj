@@ -225,7 +225,7 @@
     <Compile Include="ProjectSystems\JsProjectSystem.cs" />
     <Compile Include="ProjectSystems\MSBuildNuGetProjectSystemFactory.cs" />
     <Compile Include="ProjectSystems\NativeProjectSystem.cs" />
-    <Compile Include="ProjectSystems\ProjectKNuGetProject.cs">
+    <Compile Include="ProjectSystems\NuGetAwareProject.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ProjectSystems\WebProjectSystem.cs" />
