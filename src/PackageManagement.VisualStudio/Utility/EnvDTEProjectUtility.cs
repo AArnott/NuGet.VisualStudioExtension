@@ -56,11 +56,6 @@ namespace NuGet.PackageManagement.VisualStudio
                 NuGetVSConstants.CosmosProjectTypeGuid,
             };
 
-        private static readonly HashSet<string> UnsupportedProjectCapabilities = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
-        {
-            "SharedAssetsProject", // This is true for shared projects in universal apps
-        };
-
         public const string WebConfig = "web.config";
         public const string AppConfig = "app.config";
         private const string BinFolder = "Bin";
@@ -201,7 +196,10 @@ namespace NuGet.PackageManagement.VisualStudio
 
             var hierarchy = VsHierarchyUtility.ToVsHierarchy(envDTEProject);
 
-            return hierarchy.IsCapabilityMatch("AssemblyReferences + DeclaredSourceItems + UserSourceItems");
+            // We consider it compliant if it supports at least one capability that nuget packages use.
+            // This does not guarantee that all packages are applicable, but it does indicate
+            // that at least some packages may apply.
+            return hierarchy.IsCapabilityMatch("AssemblyReferences | DeclaredSourceItems | UserSourceItems");
         }
 
         internal static bool IsSolutionFolder(EnvDTEProject envDTEProject)
@@ -1226,26 +1224,6 @@ namespace NuGet.PackageManagement.VisualStudio
             Debug.Assert(ThreadHelper.CheckAccess());
 
             return envDTEProject.Kind != null && envDTEProject.Kind.Equals(NuGetVSConstants.WixProjectTypeGuid, StringComparison.OrdinalIgnoreCase);
-        }
-
-        /// <summary>
-        /// Check if the project has an unsupported project capability, such as, "SharedAssetsProject"
-        /// </summary>
-        private static bool HasUnsupportedProjectCapability(EnvDTEProject envDTEProject)
-        {
-            Debug.Assert(ThreadHelper.CheckAccess());
-
-            var hier = VsHierarchyUtility.ToVsHierarchy(envDTEProject);
-
-            foreach(var unsupportedProjectCapability in UnsupportedProjectCapabilities)
-            {
-                if(hier.IsCapabilityMatch(unsupportedProjectCapability))
-                {
-                    return true;
-                }
-            }
-
-            return false;
         }
 
         public static async Task<bool> IsBuildIntegrated(EnvDTEProject envDTEProject)
